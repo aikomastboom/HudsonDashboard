@@ -20,11 +20,12 @@ var Jenkins = function( project, selector ) {
 	case 'sipes.client':
 		url.coverage = 'sipes/Coverage_Reports/client-coverage.html';
 		break;
-	case 'sipes.design':
-		url.coverage = 'sipes/Coverage_Reports/design-coverage.html';
+	case 'sipes.client2':
+		url.coverage =  'sipes/api/json';
         break;
-	case 'sipes.users':
-		url.coverage = 'sipes/Coverage_Reports/users-coverage.html';
+	case 'sipes.wallaby':
+		url.coverage =  'sipes/api/json';
+		break;
 	};
 	
 	var $placeholder = $({});
@@ -47,14 +48,13 @@ var Jenkins = function( project, selector ) {
 		
 		, getCoverage: function() {
 			var result = $.ajax(url.base + url.coverage);
-			// console.log(result);
 			return result;
-			// return $.ajax('tests/stubs/coverage.html');
 		}
 		
 		, scrapeCoveragePercentage: function(report) {
 			var $report = $(report);
-			var percentage = $report.length ? $report.find('#stats:first .percentage').text() : 'No coverage!';
+			console.log($report.length);
+			var percentage = ($report.length > 0) ? $report.find('#stats:first .percentage').text() : 'No coverage!';
 			return model.inspectCoverage(percentage);
 		}
 		
@@ -69,6 +69,13 @@ var Jenkins = function( project, selector ) {
 			if(value <= 70) return wrapped = '<span class="low">'+value+'%</span>';
 			if(value <= 89) return wrapped = '<span class="medium">'+value+'%</span>';
 			if(value >= 90) return wrapped = '<span class="ok">'+value+'%</span>';
+		}
+		
+		, getCoverageReport: function(report) {
+			var $report = $(report).find('#stats');
+			var stats = ($report.length > 0 || ! $report) ? $report.html() : 'No coverage!';
+			
+			return stats;
 		}
 		
 		, createCoverageIframe: function( callback ) {
@@ -103,10 +110,11 @@ var Jenkins = function( project, selector ) {
 		}
 		
 		, fetch: function( callback ) {
-			// Execute the 2 loads in parrallel as deferreds:
+			// Execute the 2 loads in parallel as deferreds:
 			jQuery
 			.when( model.getLastBuild(), model.getCoverage() )
 			// .when( model.getLastBuild(), model.createCoverageIframe() )
+			.fail( function() { console.log('error', arguments); })
 			.done(function(build, coverage) {
 				// TODO: check for errors, handle them
 				var tmp = model.parseBuild(build[0]);
@@ -119,7 +127,7 @@ var Jenkins = function( project, selector ) {
 				status.time = tmp.time;
 				
 				status.coverage = model.scrapeCoveragePercentage(coverage[0]);
-				// status.coverage = model.scrapeCoveragePercentage(coverage.contents());
+				// status.coverage = model.getCoverageReport(coverage[0]);
 				
 				callback( status );
 			});

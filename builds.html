@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+	<title>Awesome Dash</title>
+	<link rel="stylesheet" href="css/master.css" type="text/css" media="screen" title="stylesheet" charset="utf-8">
+</head>
+<body>
+		
+	<audio id="alert" preload="auto" autobuffer>
+	  <!-- <source src="sounds/air-raid-siren-alert.mp3" type="audio/mp3" /> -->
+		<object data="sounds/hbs_mp3_player.swf" width="24" height="17" style="vertical-align: bottom;" type="application/x-shockwave-flash">
+		<param name="type" value="application/x-shockwave-flash" />
+		<param name="src" value="sounds/hbs_mp3_player.swf" />
+		<param name="data" value="sounds/hbs_mp3_player.swf" />
+		<param name="codebase" value="sounds/hbs_mp3_player.swf" />
+		<param name="FlashVars" value="TheSound=sounds/air-raid-siren-alert.mp3" />
+		<param name="allowScriptAccess" value="sameDomain" />
+		<param name="movie" value="sounds/hbs_mp3_player.swf" />
+		<param name="loop" value="true" />
+		<param name="quality" value="high" />
+		<param name="wmode" value="transparent" />
+		<!-- <a href="narrative1.mp3">narrative1.mp3</a> -->
+		</object>
+	</audio>
+		
+	<!-- <h1>Build Status</h1> -->
+	
+	<script src="lib/jquery-1.6.4.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jenkins.js" type="text/javascript" charset="utf-8"></script>
+	
+	<script type="text/javascript" charset="utf-8">
+		$(function() {
+			api = new Jenkins('sipes.api');
+			api.init();
+
+			client = new Jenkins('sipes.client');
+			client.init();
+			
+			users = new Jenkins('sipes.wallaby');
+			users.init();
+			
+			design = new Jenkins('sipes.client2');
+			design.init();
+			
+			// Reload the entire page every hour to pick up on code changes
+			setTimeout(function() { location.reload(); }, 1000 * 60 * 60);
+		});
+	</script>
+</body>
+</html>
