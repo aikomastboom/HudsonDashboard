@@ -30,18 +30,12 @@
 	
 	<script type="text/javascript" charset="utf-8">
 		$(function() {
-			api = new Jenkins('sipes.api');
-			api.init();
+			server = new Jenkins('server');
+			server.init();
 
-			client = new Jenkins('sipes.client');
+			client = new Jenkins('client');
 			client.init();
-			
-			users = new Jenkins('sipes.wallaby');
-			users.init();
-			
-			design = new Jenkins('sipes.client2');
-			design.init();
-			
+
 			// Reload the entire page every hour to pick up on code changes
 			setTimeout(function() { location.reload(); }, 1000 * 60 * 60);
 		});

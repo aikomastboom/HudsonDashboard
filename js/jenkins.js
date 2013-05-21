@@ -5,41 +5,35 @@ var Jenkins = function( project, selector ) {
 	
 	// Main model
 	var status = {};
-	// strip 'sipes.' from the project name
-	status.project = project.replace("sipes.","");;
+	status.project = project;
 
 	// URLs of services
 	var url = {};
-	url.base = 'https://hudson.informaat.nl/job/';
-	url.build = project + '/lastBuild/api/json';
+	//url.base = 'https://hudson.informaat.nl/job/';
+	url.base = 'http://hudson.local:8080/job/';
+	url.build = 'IPE-release/lastBuild/api/json';
 	
 	switch(project) {
-	case 'sipes.api':
-		url.coverage = 'sipes/Coverage_Reports/api-coverage.html';
+	case 'server':
+		url.coverage = 'IPE-release/ws/coverage-report/coverage.html';
 		break;
-	case 'sipes.client':
-		url.coverage = 'sipes/Coverage_Reports/client-coverage.html';
+	case 'client':
+		url.coverage = 'IPE-release/ws/client/client.json';
 		break;
-	case 'sipes.client2':
-		url.coverage =  'sipes/api/json';
-        break;
-	case 'sipes.wallaby':
-		url.coverage =  'sipes/api/json';
-		break;
-	};
+	}
 	
 	var $placeholder = $({});
 	
 	var timer; // timer interval id
 
 	
-	// sipes.api:
-	// lastBuild: https://hudson.informaat.nl/job/sipes.api/lastBuild/api/json
-	// coverage: https://hudson.informaat.nl/job/sipes/Coverage_Reports/api-coverage.html
+	// server:
+	// lastBuild: https://hudson.informaat.nl/job/IPE-release/lastBuild/api/json
+	// coverage: https://hudson.informaat.nl/job/IPE-release/coverage_report/coverage.html
 	
-	// sipes.client:
-	// lastBuild: https://hudson.informaat.nl/job/sipes.api/lastBuild/api/json
-	// coverage: https://hudson.informaat.nl/job/sipes/Coverage_Reports/client-coverage.html
+	// client:
+	// lastBuild: https://hudson.informaat.nl/job/IPE-release/lastBuild/api/json
+	// coverage: https://hudson.informaat.nl/job/IPE-release/client/client.json
 	
 	var model = {
 		getLastBuild: function() {
